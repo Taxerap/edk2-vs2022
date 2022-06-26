@@ -15,10 +15,13 @@ and you can play with VS2022 happily. ~~Just a lazy tool for me~~
 
 ## Defect?
 
-When building against x64 targets, the /O1 optimize option in the compiler flag must be disabled at all time, debug or release.  
-The reason is that Visual C++ will try to turn some manual copying code into _memcpy_, which will not be resolved since they are non-EDK, external symbol.  
-I have noticed this happening with `MdeModulePkg/Universal/HiiDatabase`. Maybe there will be more.  
-This only happens with x64 targets. IA32 targets are immune to such issue.  
+When building against x64 targets, the /O1 optimize option in the compiler flag must be disabled at all time, debug or release.
+The reason is that Visual C++ will try to turn some manual copying code into _memcpy_, which will not be resolved since they are non-EDK, external symbol.
+
+I have noticed this happening with `MdeModulePkg/Universal/HiiDatabase`. Maybe there will be more.
+
+This only happens with x64 targets. IA32 targets are immune to such issue.
+
 I have found other people's complains about this issue at [here](https://www.mail-archive.com/edk2-devel@lists.sourceforge.net/msg09706.html)
 and [here](https://www.mail-archive.com/edk2-devel@lists.01.org/msg11927.html). Been there for very long...
 
@@ -26,6 +29,12 @@ and [here](https://www.mail-archive.com/edk2-devel@lists.01.org/msg11927.html). 
 
 Some of the EDK II Win32 base tools from `Rebuild` will be built as 32-bit,
 but this will not affect you building 64-bit targets at all.
+
+Edk2 uses 32-bit version of Visual C++ tools.
+If you want to use 64-bit tools, change the _vcvars.bat_ lines `243 - 263` in `BaseTools/set_vsprefix_envs.bat` to _vcvars64_.
+
+But keep in mind that you have to do so **after building BaseTools**. Some conversion between 64-bit and 32-bit addresses
+will prevent BaseTools from building.
 
 ## Licensing
 
